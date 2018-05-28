@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Yaoyoroz</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -12,9 +12,75 @@
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
       #messages { margin-bottom: 40px }
+
+      /*以下、②左側のコメント*/
+      .balloon6 {
+          width: 100%;
+          margin: 10px 0;
+          overflow: hidden;
+      }
+
+      .balloon6 .faceicon {
+          float: left;
+          margin-right: -50px;
+          width: 40px;
+      }
+
+      .balloon6 .faceicon img{
+          width: 100%;
+          height: auto;
+          border-radius: 50%;
+      }
+      .balloon6 .chatting {
+          width: 100%;
+          text-align: left;
+      }
+      .says {
+          display: inline-block;
+          position: relative;
+          margin: 0 0 0 50px;
+          padding: 10px;
+          max-width: 250px;
+          border-radius: 12px;
+          background: #edf1ee;
+      }
+
+      .says:after {
+          content: "";
+          display: inline-block;
+          position: absolute;
+          top: 3px;
+          left: -19px;
+          border: 8px solid transparent;
+          border-right: 18px solid #edf1ee;
+          -ms-transform: rotate(35deg);
+          -webkit-transform: rotate(35deg);
+          transform: rotate(35deg);
+      }
+      .says p {
+          margin: 0;
+          padding: 0;
+      }
+
     </style>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
   </head>
+
   <body>
+    <!-- <div class="jumbotron">
+      <p>presented by 💖 Team Yaoyoroz</p>
+    </div> -->
+
+
+
+
     <ul id="messages"></ul>
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
@@ -22,15 +88,38 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
+
+    /* センサ値 -> 佐藤さんのAIで処理 -> 自然言語を生成？ */
+    // ルールベース
+    // 湿度XX%以下、気温YY℃以上
+    const message0 = "ぼく、かびそうだよ...";
+    // 湿度ZZ％以上
+    const message1 = "今日は雨降るから持っていってyo";
+    // GPS変化なしAA日以上
+    const message2 = "たんすの肥やしなう"
+
+    const message3 = "・・・。"
+
+    const messages = [message0, message1, message2, message3];
+
       $(function () {
         var socket = io();
-        $('form').submit(function(){
-          socket.emit('chat message', $('#m').val());
-          $('#m').val('');
-          return false;
-        });
+
+        setInterval(function(){
+            let rand = Math.floor(Math.random() * 3) + 0
+            socket.emit('chat message', messages[rand]);
+        }, 10000)
+
         socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
+            let img_src;
+            if(msg == messages[0]){
+                img_src =　"img/bag.png";
+            } else if(msg == messages[1]){
+                img_src = "http://kids.wanpug.com/illust/illust552.png"
+            } else if(msg == messages[2]){
+                img_src = "http://earth.publicdomainq.net/201709/07o/publicdomainq-0013084wefcfc.png"
+            }
+          $('#messages').append($('<span>').html('<div class="balloon6"><div class="faceicon"><img src="'+ img_src +'" /></div><div class="chatting"><div class="says"><p>' + msg + '</p></div></div></div>'));
           window.scrollTo(0, document.body.scrollHeight);
         });
       });
