@@ -19,19 +19,46 @@ const messages = [message0, message1, message2, message3];
         socket.emit('chat message', messages[rand]);
     }, 5000)
 
-    socket.on('chat message', function(msg){
+    socket.on('chat message', function(msg, a){
+        console.log(a);
         let img_src;
+        let flag = false;
         if(msg == messages[0]){
             // https://publicdomainq.net/tote-bag-0013084/
             img_src =　"/img/bag.jpg";
         } else if(msg == messages[1]){
-            img_src = "/img/kasa.png"
+            // http://kids.wanpug.com/illust100.html
+            img_src = "/img/kasa.png";
         } else if(msg == messages[2]){
-            img_src = "/img/huku1.png"
+            // http://01.gatag.net/tag/%E8%A1%A3%E6%9C%8D%EF%BC%88%E8%A1%A3%E9%A1%9E%EF%BC%89/
+            img_src = "/img/huku1.png";
         } else if(msg == messages[3]){
-            img_src = "/img/huku2.png"
+            // http://sozaizchi.com/sozai/illust/kodomofuku/03.html
+            img_src = "/img/huku2.png";
+        } else {
+            img_src = "/img/me.png";
+            flag = true;
         }
-      $('#messages').append($('<span>').html('<div class="balloon6"><div class="faceicon"><img src="'+ img_src +'" /></div><div class="chatting"><div class="says"><p>' + msg + '</p></div></div></div>'));
-      window.scrollTo(0, document.body.scrollHeight);
+
+        if(flag){
+            $('#messages').append($('<span>').html('<div class="mycomment"><p>' + msg + '</p></div>'));
+        } else {
+            $('#messages').append($('<span>').html('<div class="balloon6"><div class="faceicon"><img src="'+ img_src +'" /></div><div class="chatting"><div class="says"><p>' + msg + '</p></div></div></div>'));
+        }
+
+
+
+        window.scrollTo(0, document.body.scrollHeight);
     });
+
+
+    $('form').submit(function(){
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    // socket.on('chat message', function(msg){
+    //   $('#messages').append($('<li>').text(msg));
+    //   window.scrollTo(0, document.body.scrollHeight);
+    // });
   });
