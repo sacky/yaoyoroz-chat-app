@@ -1,19 +1,18 @@
 <!doctype html>
 <html>
 <head>
-    <title>Yaoyoroz</title>
+    <title>Yaoyoroz App</title>
     <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font: 13px Helvetica, Arial; }
     form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
     form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
     form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-    #messages { margin-bottom: 40px }
+    #messages { margin-top: 20px; margin-bottom: 40px }
 
-    /*以下、②左側のコメント*/
     .balloon6 {
         width: 100%;
-        margin: 10px 0;
+        margin: 10px 0 10px 20px;
         overflow: hidden;
     }
 
@@ -60,7 +59,7 @@
     }
 
     .mycomment {
-        margin: 10px 0;
+        margin: 10px 0 10px 500px;
     }
     .mycomment p{
         display: inline-block;
@@ -97,15 +96,14 @@
 </head>
 
 <body>
-    <!-- <div class="jumbotron">
-    <p>presented by 💖 Team Yaoyoroz</p>
+<!-- <div class="jumbotron">
+<p>presented by 💖 Team Yaoyoroz</p>
 </div> -->
-
 
 <!-- <ul id="messages"></ul> -->
 <div id=messages></div>
 <form action="">
-    <input id="m" autocomplete="off" /><button>Send</button>
+    <input id="m" autocomplete="off" /><button>:)</button>
 </form>
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
